@@ -1,0 +1,7 @@
+[
+  {"check": "effects-fit", "target": "(the page)", "reason": "The client asked for three.js 3D glass objects and glassmorphism on this agency site (2026-11-21); one WebGL context, lazy-loaded, still under reduced motion."},
+  {"check": "shader-lint", "target": "\"common\"", "reason": "The match is three.js's own '#include <common>' chunk directive, which three.js replaces with the chunk source before any shader is compiled; no shader uses 'common' as a name."},
+  {"check": "phone-number", "target": "+880 1852 471826", "reason": "The client's real office phone number, published on their current site; this is a live business site, not a sample page."},
+  {"check": "phone-number", "target": "https://wa.me/8801759945057", "reason": "The client's real WhatsApp contact link, published on their current site; this is a live business site, not a sample page."},
+  {"check": "stagger", "target": "h1#hero-h", "reason": "The staggered headline lines are the client's chosen reference look (design/reference/agency-dark.jpg), approved by the client."}
+]

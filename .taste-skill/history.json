@@ -1,0 +1,22 @@
+{
+  "palettes": [
+    "blush-sage-slate",
+    "white-signal-red"
+  ],
+  "types": [
+    "zilla",
+    "red-hat"
+  ],
+  "dealt": [
+    "zilla",
+    "red-hat",
+    "instrument-serif"
+  ],
+  "moments": [
+    {
+      "id": "word-highlight",
+      "at": "2026-11-21T11:10:33.670Z",
+      "seed": "ddd7b321"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# built on Vercel by `npm run build` (images come from design/originals)
+node_modules
+dist
+dist-ssr
+public/images
+public/favicon-48.png
+public/apple-touch-icon.png
+# local check output
+shots
+tiles
+.taste-skill

@@ -1,0 +1,8 @@
+/*
+  Motion Brew uses Tailwind's `grid` and `group` class names, which the kit's system.css also styles
+  (`.grid` as the 12-column page grid, `.group` as a flex column). Inside an island those kit rules are
+  taken back here, before Tailwind's utilities load, so the component's own utilities decide its layout.
+*/
+:where(.island) .grid { grid-template-columns: revert; column-gap: revert; row-gap: revert; }
+:where(.island) .grid > * { grid-column: revert; min-width: revert; }
+:where(.island) .group { display: revert; flex-direction: revert; min-height: revert; }

@@ -1,0 +1,39 @@
+{
+  "name": "uptotechsyl-site",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Uptotechsyl marketing site: React components prerendered to static HTML, Motion Brew islands hydrated on the client.",
+  "scripts": {
+    "dev": "vite",
+    "images": "node scripts/optimize-images.mjs",
+    "build": "npm run images && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "gsap": "^3.15.1",
+    "lucide-react": "^1.77.0",
+    "motion": "^14.14.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.7.1",
+    "three": "^0.181.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.181.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}
