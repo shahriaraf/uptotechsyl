@@ -912,6 +912,10 @@ export const ContactCard = React.forwardRef<HTMLDivElement, ContactCardProps>(
                     <img
                       src={avatar}
                       alt=""
+                      width={48}
+                      height={48}
+                      loading="lazy"
+                      decoding="async"
                       draggable={false}
                       className="size-12 rounded-full bg-zinc-200 object-cover"
                     />
