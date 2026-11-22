@@ -5,7 +5,7 @@
   3D:    the hero is a three.js point field of rolling tea-garden hills (src/scene/terrain.ts).
   motion: Motion Brew islands (BinaryText labels, FlipWords, MagneticButton, InfiniteGallery,
          BlurAccordion, RotatingText, ContactCard) and the WorkGrid filter; the rest is CSS and
-         src/site/behaviours.ts (menu, clock, hover preview, form).
+         src/site/behaviours.ts (menu, form).
 */
 import type { ReactNode } from 'react';
 import { founder, makes, nav, prices, services, site, steps, team, work } from './content/site';
@@ -48,13 +48,11 @@ function Person({ p, lead }: { p: (typeof team)[number]; lead?: boolean }) {
   );
 }
 
-function Head({ n, label, id, title, aside }: { n: number; label: string; id: string; title: string; aside?: ReactNode }) {
+function Head({ label, id, title, aside }: { label: string; id: string; title: string; aside?: ReactNode }) {
   return (
     <div className="shead">
       <div className="shead__rule">
-        <span className="shead__index">[{pad(n)}]</span>
         <Island name="label" inline props={{ text: label }} className="shead__label" />
-        <span className="shead__cross" aria-hidden="true" />
       </div>
       <div className="shead__row">
         <h2 id={id}>
@@ -77,19 +75,13 @@ export function Page() {
         <div className="wrap hdr__bar">
           <Logo />
           <nav className="hdr__nav" aria-label="Main">
-            {nav.map((n, i) => (
+            {nav.map((n) => (
               <a className="hdr__link" href={n.href} key={n.href} data-scramble>
-                <span className="hdr__num" aria-hidden="true">
-                  {pad(i + 1)}
-                </span>
                 {n.label}
               </a>
             ))}
           </nav>
           <div className="hdr__end">
-            <span className="hdr__clock" aria-hidden="true">
-              SYL <span data-clock>--:--</span>
-            </span>
             {/* the theme toggle (data-theme-toggle, src/site/behaviours.ts) is off for now; the light palette stays in the CSS */}
             <a className="btn btn--accent hdr__cta" href="#enquiry">
               {site.mainAction}
@@ -102,9 +94,8 @@ export function Page() {
         </div>
         <div className="menu" id="menu" data-menu hidden>
           <nav className="wrap menu__nav" aria-label="Menu">
-            {nav.map((n, i) => (
+            {nav.map((n) => (
               <a className="menu__link" href={n.href} key={n.href}>
-                <span>{pad(i + 1)}</span>
                 {n.label}
               </a>
             ))}
@@ -121,9 +112,6 @@ export function Page() {
           <canvas className="hero__scene" data-terrain aria-hidden="true" />
           <div className="hero__grid" aria-hidden="true" />
           <div className="wrap hero__inner">
-            <p className="hero__kicker">
-              <span className="dot" aria-hidden="true" /> Web design and development studio, Sylhet
-            </p>
             <h1 id="hero-h" className="hero__title">
               <span className="line">
                 <span>Websites, designed</span>
@@ -178,7 +166,6 @@ export function Page() {
         <section className="section" id="work" aria-labelledby="work-h">
           <div className="wrap">
             <Head
-              n={1}
               label="Selected work"
               id="work-h"
               title="Shops, sites and dashboards we shipped."
@@ -192,7 +179,6 @@ export function Page() {
         <section className="section section--wall" id="print" aria-labelledby="print-h">
           <div className="wrap">
             <Head
-              n={2}
               label="Print and brand"
               id="print-h"
               title="Covers, calendars, logos and tees."
@@ -206,7 +192,6 @@ export function Page() {
         <section className="section" id="services" aria-labelledby="services-h">
           <div className="wrap">
             <Head
-              n={3}
               label="Services"
               id="services-h"
               title="Six services, one team in one office."
@@ -216,9 +201,9 @@ export function Page() {
                 </a>
               }
             />
-            <ol className="svc" data-preview-list>
+            <ol className="svc">
               {services.map((s, i) => (
-                <li className="svc__row" key={s.name} data-preview={s.image ? `/images/${s.image}-${s.image.startsWith('wall-') ? 520 : 480}.webp` : undefined}>
+                <li className="svc__row" key={s.name}>
                   <span className="svc__num">{pad(i + 1)}</span>
                   <h3 className="svc__name">{s.name}</h3>
                   <p className="svc__line">{s.line}</p>
@@ -230,16 +215,13 @@ export function Page() {
                 </li>
               ))}
             </ol>
-            <div className="svc__preview" data-preview aria-hidden="true">
-              <img alt="" src={`/images/${services.find((x) => x.image)!.image}-480.webp`} width={480} height={300} loading="lazy" decoding="async" />
-            </div>
           </div>
         </section>
 
         {/* PROCESS: three steps on one line */}
         <section className="section" id="process" aria-labelledby="process-h">
           <div className="wrap">
-            <Head n={4} label="Process" id="process-h" title="Three steps, each one signed off by you." />
+            <Head label="Process" id="process-h" title="Three steps, each one signed off by you." />
             <ol className="steps">
               {steps.map((s, i) => (
                 <li className="step" key={s.title}>
@@ -262,7 +244,6 @@ export function Page() {
         <section className="section" id="prices" aria-labelledby="prices-h">
           <div className="wrap">
             <Head
-              n={5}
               label="Prices"
               id="prices-h"
               title="One-off prices for design and build."
@@ -317,7 +298,6 @@ export function Page() {
         <section className="section" id="team" aria-labelledby="team-h">
           <div className="wrap">
             <Head
-              n={6}
               label="Team"
               id="team-h"
               title="The six people who will build your site."
@@ -345,7 +325,7 @@ export function Page() {
           <div className="wrap">
             <div className="faq">
               <div className="faq__intro">
-                <Head n={7} label="Questions" id="questions-h" title="Before you ask." />
+                <Head label="Questions" id="questions-h" title="Before you ask." />
                 <p className="faq__more">
                   Something else? Email{' '}
                   <a className="link" href={`mailto:${site.email}`}>
@@ -361,7 +341,7 @@ export function Page() {
         {/* ENQUIRY: the ways to reach the studio, and the brief form */}
         <section className="section" id="enquiry" aria-labelledby="enquiry-h">
           <div className="wrap">
-            <Head n={8} label="Contact" id="enquiry-h" title="Tell us about the project." />
+            <Head label="Contact" id="enquiry-h" title="Tell us about the project." />
             <div className="contact">
               <div className="contact__side">
                 <p className="contact__lead">

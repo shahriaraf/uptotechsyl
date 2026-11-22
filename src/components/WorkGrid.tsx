@@ -29,7 +29,6 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
       <div className="workgrid__filters" role="group" aria-label="Filter projects">
         <LayoutGroup id="work-filter">
           {kinds.map((k) => {
-            const count = k === 'All' ? items.length : items.filter((i) => i.kind === k).length;
             return (
               <button
                 key={k}
@@ -46,7 +45,6 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
                   />
                 )}
                 <span className="workgrid__pill-label">{k}</span>
-                <span className="workgrid__pill-count">{String(count).padStart(2, '0')}</span>
               </button>
             );
           })}

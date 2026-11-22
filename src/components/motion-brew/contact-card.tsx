@@ -894,7 +894,7 @@ export const ContactCard = React.forwardRef<HTMLDivElement, ContactCardProps>(
               }
               transition={{ type: "spring", stiffness: 420, damping: 32 }}
               style={{ transformOrigin: "50% 100%" }}
-              className="absolute bottom-full left-1/2 z-30 w-[340px] max-w-[calc(100vw-1rem)] -translate-x-1/2 pb-3"
+              className="absolute bottom-full left-1/2 z-30 w-[340px] max-w-[calc(100vw-1rem)] -translate-x-1/2 pb-3 max-sm:left-0 max-sm:translate-x-0"
             >
               {/* The padding under the card is a bridge, so the pointer can cross from the link to the card. */}
               <motion.div

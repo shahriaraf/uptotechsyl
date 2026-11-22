@@ -33,16 +33,6 @@ function header() {
   window.matchMedia('(min-width: 1024px)').addEventListener('change', () => set(false));
 }
 
-/** Sylhet's time in the header */
-function clock() {
-  const el = document.querySelector('[data-clock]');
-  if (!el) return;
-  const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: site.timeZone });
-  const tick = () => (el.textContent = fmt.format(new Date()));
-  tick();
-  setInterval(tick, 1000);
-}
-
 /** nav links scramble through glyphs and settle on hover */
 function scramble() {
   if (reduce()) return;
@@ -67,42 +57,6 @@ function scramble() {
       };
       raf = requestAnimationFrame(run);
     });
-  });
-}
-
-/** #services: pointing at a row shows that service's work beside the cursor */
-function preview() {
-  const list = document.querySelector<HTMLElement>('[data-preview-list]');
-  const box = document.querySelector<HTMLElement>('[data-preview]');
-  if (!list || !box || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  const img = box.querySelector('img')!;
-  let x = 0, y = 0, tx = 0, ty = 0, raf = 0;
-  const follow = () => {
-    x += (tx - x) * 0.16;
-    y += (ty - y) * 0.16;
-    box.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-    raf = requestAnimationFrame(follow);
-  };
-  list.addEventListener('pointermove', (e) => {
-    const r = list.getBoundingClientRect();
-    tx = e.clientX - r.left;
-    ty = e.clientY - r.top + list.offsetTop;
-    const row = (e.target as HTMLElement).closest<HTMLElement>('.svc__row');
-    const src = row?.dataset.preview;
-    if (src) {
-      if (img.getAttribute('src') !== src) img.src = src;
-      box.classList.add('is-on');
-    } else box.classList.remove('is-on');
-    if (!raf) {
-      x = tx;
-      y = ty;
-      raf = requestAnimationFrame(follow);
-    }
-  });
-  list.addEventListener('pointerleave', () => {
-    box.classList.remove('is-on');
-    cancelAnimationFrame(raf);
-    raf = 0;
   });
 }
 
@@ -200,9 +154,7 @@ function theme() {
 export function behaviours() {
   theme();
   header();
-  clock();
   scramble();
-  preview();
   prefill();
   hours();
   form();
