@@ -1,15 +1,34 @@
 /** The page's own small behaviours, in plain DOM code so they work before React hydrates. */
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import { site } from '../content/site';
 
 const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/** smooth wheel scrolling on desktop; touch keeps the phone's native scroll, which is already smooth */
+let lenis: Lenis | null = null;
+function smooth() {
+  if (reduce()) return;
+  lenis = new Lenis({
+    autoRaf: true,
+    lerp: 0.1,
+    anchors: true, // honours the page's scroll-padding-top, so headings clear the fixed header
+    // dialogs (the work lightbox) scroll on their own
+    prevent: (node) => !!node.closest('dialog'),
+  });
+}
 
 /** the header: solid once the hero is behind it; the phone menu opens full screen */
 function header() {
   const hdr = document.querySelector<HTMLElement>('[data-hdr]');
   if (!hdr) return;
-  const onScroll = () => hdr.classList.toggle('is-solid', window.scrollY > 24);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // a marker 24px down the page: once it scrolls out, the header turns solid (a scroll listener reading
+  // scrollY forced a layout on every frame)
+  const mark = document.createElement('div');
+  mark.setAttribute('aria-hidden', 'true');
+  mark.style.cssText = 'position:absolute;top:24px;left:0;width:1px;height:1px;pointer-events:none';
+  document.body.prepend(mark);
+  new IntersectionObserver(([e]) => hdr.classList.toggle('is-solid', !e.isIntersecting)).observe(mark);
 
   const toggle = hdr.querySelector<HTMLButtonElement>('[data-menu-toggle]');
   const menu = hdr.querySelector<HTMLElement>('[data-menu]');
@@ -19,6 +38,8 @@ function header() {
     menu.hidden = !open;
     hdr.classList.toggle('is-open', open);
     document.documentElement.classList.toggle('menu-open', open);
+    if (open) lenis?.stop();
+    else lenis?.start();
   };
   toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
   menu.addEventListener('click', (e) => {
@@ -152,6 +173,7 @@ function theme() {
 }
 
 export function behaviours() {
+  smooth();
   theme();
   header();
   scramble();

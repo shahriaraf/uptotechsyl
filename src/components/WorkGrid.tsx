@@ -59,7 +59,7 @@ export function WorkGrid({ items }: { items: WorkItem[] }) {
               layout={!still}
               className="workgrid__item"
               initial={still ? false : { opacity: 0, scale: 0.96, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
               exit={still ? undefined : { opacity: 0, scale: 0.96, filter: 'blur(8px)' }}
               transition={{ duration: 0.5, ease: EASE }}
             >

@@ -17,7 +17,7 @@
 import * as React from "react";
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { type ClassValue, clsx } from "clsx";
-import { motion, useAnimation, useAnimationFrame, useMotionValue, useReducedMotion, type Variants } from "motion/react";
+import { motion, useAnimation, useAnimationFrame, useInView, useMotionValue, useReducedMotion, type Variants } from "motion/react";
 import { twMerge } from "tailwind-merge";
 
 // cn(): merges Tailwind classes, later ones win.
@@ -190,9 +190,13 @@ export const RotatingText = React.forwardRef<HTMLDivElement, RotatingTextProps>(
   const rotate = useMotionValue(0);
   const speed = React.useRef(1);
   const [hover, setHover] = React.useState(false);
+  // local change for uptotechsyl (performance): the ring only turns while it is on screen
+  const own = React.useRef<HTMLDivElement>(null);
+  React.useImperativeHandle(ref, () => own.current as HTMLDivElement);
+  const onScreen = useInView(own);
 
   useAnimationFrame((_, delta) => {
-    if (still) return;
+    if (still || !onScreen) return;
     // Ease the speed toward its target so hover feels like a push, not a jump.
     speed.current += ((hover ? boost : 1) - speed.current) * Math.min(1, delta / 220);
     rotate.set((rotate.get() + (360 / (duration * 1000)) * delta * speed.current) % 360);
@@ -205,7 +209,7 @@ export const RotatingText = React.forwardRef<HTMLDivElement, RotatingTextProps>(
 
   return (
     <div
-      ref={ref}
+      ref={own}
       role="img"
       aria-label={label ?? text.replace(/[•·]/g, "").trim()}
       onPointerEnter={() => setHover(true)}
@@ -213,7 +217,7 @@ export const RotatingText = React.forwardRef<HTMLDivElement, RotatingTextProps>(
       className={cn("relative grid place-items-center", className)}
       style={{ width: size, height: size }}
     >
-      <motion.svg viewBox="0 0 100 100" className="absolute inset-0 size-full overflow-visible" style={{ rotate }} aria-hidden>
+      <motion.svg viewBox="0 0 100 100" className="absolute inset-0 size-full overflow-visible" style={{ rotate, willChange: "transform" }} aria-hidden>
         <defs>
           <path id={id} d={`M 50 ${50 - r} a ${r} ${r} 0 1 1 0 ${2 * r} a ${r} ${r} 0 1 1 0 ${-2 * r}`} />
         </defs>

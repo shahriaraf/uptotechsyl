@@ -82,9 +82,9 @@ export const BlurText = React.forwardRef<HTMLElement, BlurTextProps>(function Bl
         <React.Fragment key={i}>
           <motion.span
             aria-hidden
-            className="inline-block whitespace-pre will-change-transform"
+            className="inline-block whitespace-pre"
             initial={still ? false : { opacity: 0, y: offset, filter: `blur(${blur}px)` }}
-            animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
+            animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } } : undefined}
             transition={{ duration, ease: [0.22, 1, 0.36, 1], delay: delay + i * stagger }}
           >
             {piece}

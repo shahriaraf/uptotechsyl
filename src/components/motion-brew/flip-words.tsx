@@ -89,7 +89,7 @@ export const FlipWords = React.forwardRef<HTMLParagraphElement, FlipWordsProps>(
                   className="inline-block"
                   style={{ transformOrigin: "50% 100%" }}
                   initial={still ? false : { opacity: 0, y: "0.4em", rotateX: -80, filter: "blur(6px)" }}
-                  animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)" }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)", transitionEnd: { filter: "none" } }}
                   transition={{ duration: 0.45, ease: EASE, delay: i * 0.03 }}
                 >
                   {ch}

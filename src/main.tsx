@@ -12,7 +12,10 @@ async function hydrateIslands() {
     import('react-dom/client'),
     import('./islands/registry'),
   ]);
+  const done = new WeakSet<Element>();
   const mount = (el: HTMLElement) => {
+    if (done.has(el)) return;
+    done.add(el);
     const Component = islands[el.dataset.island as keyof typeof islands];
     if (!Component) return;
     const node = createElement(Component, JSON.parse(el.dataset.props || '{}'));
@@ -29,7 +32,19 @@ async function hydrateIslands() {
       }),
     { rootMargin: '600px 0px' },
   );
-  document.querySelectorAll<HTMLElement>('[data-island]').forEach((el) => io.observe(el));
+  const all = [...document.querySelectorAll<HTMLElement>('[data-island]')];
+  all.forEach((el) => io.observe(el));
+  // the rest wake one per idle moment, top to bottom, so they are ready before the reader scrolls to them
+  const next = () => {
+    const el = all.shift();
+    if (!el) return;
+    if (!done.has(el)) {
+      io.unobserve(el);
+      mount(el);
+    }
+    whenIdle(next);
+  };
+  whenIdle(next);
 }
 
 function whenIdle(run: () => void) {
